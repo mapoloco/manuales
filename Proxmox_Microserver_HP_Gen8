@@ -1,0 +1,38 @@
+Instalar Xpenology 7.1.1 42962 en Proxmox (HP Gen8)
+
+1--Descargamos el backup desde aquí (https://t.me/ProxmOlogy/976)
+2--Nos conectamos por filezilla a la ip de proxmox (user root, elegir en puerto 22)
+3--Subimos el fichero que hemos descargado a esta ruta: /var/lib/vz/bump
+4--En el panel de proxmox, nos dirigimos a local (pve) y pinchamos en Backups
+
+
+Añadimos los discos duros que tengamos. 
+-Sata0 es el disco que tiene el boot
+-Sata1 es el disco que tiene el sistemna operativo
+-Sata2,3,4... son los discos físicos que tengamos para datos. Estos discos, se añaden mediante passthrough.
+
+Explicación añadir discos por passthrough:
+si entras en la consolla de proxmox, escribe: ls /dev/disk/by-id
+te mostrará tus discos. Tienes que copiar el ID de cada uno.
+
+después, con el comando: 
+qm set 10X -sataX /dev/disk/by-id/Xxxxxxxxxxxxxxx
+
+en 10X poner tu máuina virtual
+en -sataX poner en X el disco que es
+en Xxxxxxxxxxxxxxx poner el id de un disco
+
+y repetirlo tantas veces como discos tengas. Por ejemplo, en el G8 con 4Hdd:
+
+qm set 100 -sata2 /dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M2EJ1234
+qm set 100 -sata3/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M3VX4567
+qm set 100 -sata4/dev/disk/by-id/ata-WDC_WD40EFRX-68N32N0_WD-WCC7K3SE8910
+qm set 100 -sata5/dev/disk/by-id/ata-WDC_WD40EFRX-68N32N0_WD-WCC7K7VU1111
+
+5--Hacemos click en el fichero subido desde FileZilla y le damos a Restore
+6--Si vemos el mensaje de TASK OK, solo tenemos que dirigirnos a la VM y lanzarla para comprobar que funciona.
+
+Si quieres poner Proxmox en la unidadóptica del Gen8, si tras instalar proxmox no te inicia, debes poner en una microsd o en un USB esta imagen modificada previoamente:
+https://t.me/ProxmOlogy/3117
+Boot G8 Proxmox Microsd o USB para que reconozca el SSD interno conectado a la unidad óptica. Lo que hay que cambiar (por linux) mediante gedit como root el archivo, la parte hdX donde X indica el número de disco que tienes.
+
