@@ -18,7 +18,7 @@ te mostrará tus discos. Tienes que copiar el ID de cada uno.
 después, con el comando: 
 qm set 10X -sataX /dev/disk/by-id/Xxxxxxxxxxxxxxx
 
-en 10X poner tu máuina virtual
+en 10X poner tu máquina virtual
 en -sataX poner en X el disco que es
 en Xxxxxxxxxxxxxxx poner el id de un disco
 
